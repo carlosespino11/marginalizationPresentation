@@ -1,0 +1,63 @@
+---
+title: "Marginalization in Mexico"
+author: "Carlos Espino"
+date: "August 11, 2015"
+output: ioslides_presentation
+runtime: shiny
+---
+
+```{r echo=FALSE, message=FALSE,warning=FALSE,results='hide'}
+library(dplyr)
+library(caret)
+library(maptools)
+library(ggplot2)
+library(jsonlite)
+library(leaflet)
+library(shiny)
+
+source("utils.R")
+
+objects = read_data()
+marg = objects$data
+mex = objects$map
+
+```
+
+## Overview
+
+* The purpose of this app is to make an analysis of social exclusion (marginalization) in Mexico. 
+* Social exclusion is the process in which individuals or entire communities of people are systematically blocked from various rights, opportunities and resources that are normally available to members of a different group, and which are fundamental to social integration within that particular group.
+
+
+* To make this analysis, we use some commonly used variables to measure marginalization. These are measured by state.
+* The app includes a tools and visualizations to:
+  + Visualize the marginalization variables.
+  + Create an index with the desired marginalization variables and visualize it.
+  + Create clusters and visualize them.
+
+## Visualization tool
+
+* The visualization tools allows the user to choose between the marginalization variables to visualize them as the following map:
+
+```{r echo=FALSE,results='asis'}
+mapDrawer(mex, marg[,"illiteracy"], "Illiteracy" ,labelFormat(suffix = "%")) 
+
+```
+
+
+
+## Tool to create an index
+
+* This tool helps to create a marginalization index. 
+* This is a single number for each state that summarizes all the marginalization variables.
+* A common way to do this is to perform a principal component analysis and use the first component as the index.
+* The tool in the app gives the choice to the user to choose the desired values to create the index.
+
+
+## Clusterize tool
+* This tool is used to group states into clusters. 
+* The objective is to make groups such that states in the same group are more similar to each other than to those in other groups.
+* The marginalization variables are used to determine the clusters, measuring the distance between observations in a dimension of the size of the number of variables.
+* The clustering algorithm that we are going to use is k-means.
+
+
