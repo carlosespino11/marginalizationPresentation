@@ -2,8 +2,13 @@
 title: "Marginalization in Mexico"
 author: "Carlos Espino"
 date: "August 11, 2015"
-output: ioslides_presentation
+output: 
+  ioslides_presentation: 
+    widescreen: yes
 runtime: shiny
+resource_files:
+- marginalization_data.csv
+- mx_states.json
 ---
 
 ```{r echo=FALSE, message=FALSE,warning=FALSE,results='hide'}
@@ -55,9 +60,14 @@ mapDrawer(mex, marg[,"illiteracy"], "Illiteracy" ,labelFormat(suffix = "%"))
 
 
 ## Clusterize tool
-* This tool is used to group states into clusters. 
-* The objective is to make groups such that states in the same group are more similar to each other than to those in other groups.
-* The marginalization variables are used to determine the clusters, measuring the distance between observations in a dimension of the size of the number of variables.
+* This tool is used to group states into clusters. The objective is to make groups such that states in the same group are more similar to each other than to those in other groups.
+* The marginalization variables are used to determine the clusters.
 * The clustering algorithm that we are going to use is k-means.
+* The center of the clusters gives relevant information about the groups formed. For example, with 5 clusters, using only illiteracy and min_wage varibles:
+
+```{r}
+clust = kmeans(marg %>% select(illiteracy,min_wage), 5)
+t(clust$centers)
+```
 
 
